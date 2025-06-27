@@ -81,6 +81,22 @@ def generate_cartesian_meshes(
     """
     Generate symmetric X, Y, Z mesh grids with finer resolution near defined port regions.
 
+    Usage:
+    Assuming a single input port that needs fine resolution
+    ```python
+    # symmetrical -> 0 -> xlims and double it in the negative
+    meshx, meshy, meshz = generate_cartesian_meshes(
+                    [xlims, ylims, zlims],
+                    port_start=port1_start,
+                    port_stop=port1_stop,
+                    fine_step=fine_grid,
+                    coarse_mult=course_grid_mult
+                )
+    openEMS_grid.AddLine('x', meshx)
+    openEMS_grid.AddLine('y', meshy)
+    openEMS_grid.AddLine('z', meshz)
+    ```
+
     Args:
         lims: Sequence of (min, max) tuples for X, Y, Z axes.
         port_start: (x, y, z) starting coordinates for port region.
@@ -105,4 +121,4 @@ def generate_cartesian_meshes(
         )
         meshes.append(mesh)
 
-    return tuple(meshes)  # (mesh_x, mesh_y, mesh_z)
+    return tuple(sorted(meshes))  # (mesh_x, mesh_y, mesh_z)

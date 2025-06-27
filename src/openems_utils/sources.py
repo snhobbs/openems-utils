@@ -24,6 +24,9 @@ def gaussian_step(rise_time, center_time, dB_cutoff=6, sign=1):
     https://personal.math.ubc.ca/~cbm/aands/abramowitz_and_stegun.pdf pg. 299
     https://personal.math.ubc.ca/~cbm/aands/page_299.htm
 
+    OpenEMS used fparser to evaluation the expression
+        + Guide: http://warp.povusers.org/FunctionParser/fparser.html#longdesc_Parse
+        + Source: https://github.com/thliebig/fparser
 
     Parameters:
     - rise_time: 10–90% rise time in seconds
@@ -45,8 +48,8 @@ def gaussian_step(rise_time, center_time, dB_cutoff=6, sign=1):
     # Gaussian step approximation based on erf() (Abramowitz and Stegun 7.1.25)
     base_expr = f'(1 - exp(-{K}*(t-{C})*{K}*(t-{C})) * ' \
                 f'(0.3480242/(1+0.47047*{K}*(t-{C})) - ' \
-                f'0.0958798/((1+0.47047*{K}*(t-{C}))**2) + ' \
-                f'0.7478556/((1+0.47047*{K}*(t-{C}))**3)))'
+                f'0.0958798/pow((1+0.47047*{K}*(t-{C})), 2) + ' \
+                f'0.7478556/pow((1+0.47047*{K}*(t-{C})), 3)))'
 
     neg_expr = base_expr.replace('+0.47047', '-0.47047')
 
